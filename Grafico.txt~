@@ -1,0 +1,10 @@
+set title "texto que corresponde ao título"
+set xlabel "texto corresponde à abscissa"
+set ylabel "texto corresponde à ordenada"
+
+0.002 9.208280 
+0.003 10.047159 
+0.004 6.404497 
+0.005 5.019265 
+0.006 5.547008 
+0.007 1.457424 

@@ -1,0 +1,163 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+int ordena(double x[], double y[],int n)
+{
+   int i, j,aux,aux2;
+
+
+	for ( j = 1 ; j < n ; j++){
+		aux = x[j];
+		aux2 = y[j];
+		i = j - 1;
+     
+	while((i>=0) && (x[i]>aux)){      
+		x[i+1] = x[i];
+		y[i+1] = y[i];
+		i = i - 1;
+	}
+		x[i+1] = aux;
+		y[i+1] = aux2;
+	}
+	return 0;
+}
+//------------------------------------------- Funcoes Lagrange -------------------------------
+/*
+Funcao que faz o calculo da interpolacao pelo Polinomio de Lagrange 
+Entradas : valor a ser interpolado, o grau do polinomio,o vetor das abcissas, vetor das ordenadas
+Saida :Valor interpolado
+*/
+
+void polinomioLagrange(double xValor, int n, double x[], double y[]){	
+    
+int i, j;
+double mult;
+double l = 0;
+double num = 1;
+double den = 1;
+
+	for(i = 0 ; i < n ; i++){
+	
+		mult = y[i];           
+	
+		for(j=0;j<n;j++){
+		
+			if(j!=i)
+	
+				mult = (mult*(  (xValor - x[j])/(x[i] - x[j]) ) );
+			
+		}
+
+	l = l + mult;	
+
+	}	
+	printf("\t\n%lf  %lf \n",xValor,l);
+     
+}    
+             
+
+
+//-----------------------------------Fim das Funcoes utilizadas por Lagrange-------------
+
+double distancia(double x,double y,double x2,double y2){
+
+double distancia;
+	
+	distancia = (x2-x)*(x2-x)+(y2-y)*(y2-y);
+	distancia = pow(distancia,0.5);
+	return distancia;
+}
+
+
+
+int TrataDados(FILE *fp){
+
+#define TAM 4
+
+int id[TAM];
+double x[TAM];
+double y[TAM];
+double x2,y2;
+int i,id2;
+	
+	while(!feof(fp)){
+		
+		for (i = 0; i < TAM -1 ; i++){
+		
+			fscanf(fp,"%d",&id[i]);
+			fscanf(fp,"%lf",&x[i]);		
+			fscanf(fp,"%lf",&y[i]);
+			
+		}
+		
+		fscanf(fp,"%d",&id2);		
+		fscanf(fp,"%lf",&x2);
+		fscanf(fp,"%lf",&y2);
+		
+		fscanf(fp,"%d",&id[TAM -1]);
+		fscanf(fp,"%lf",&x[TAM -1]);		
+		fscanf(fp,"%lf",&y[TAM -1]);
+			
+		ordena(x,y,i+1);
+		//for(i=0;i<TAM;i++){		
+		//printf("\n %d  %lf  %lf\n",id[i],x[i],y[i]);
+		printf("\n %d  %lf  %lf\n",id2,x2,y2);
+		//}
+		polinomioLagrange(x2,i-2,x,y);
+	}
+			
+}
+int dados(FILE *fp){
+int id;
+double x,y,x2,y2;
+double menor,maior,media;
+int cont;
+double dist;
+
+menor = 10000;
+maior = 0;
+media = 0;
+cont = 0;
+	
+	while(!feof(fp)){	
+	
+		fscanf(fp,"%d",&id);		
+		fscanf(fp,"%lf",&x);
+		fscanf(fp,"%lf",&y);
+		
+		fscanf(fp,"%lf",&x2);
+		fscanf(fp,"%lf",&y2);
+		
+		dist = distancia(x,y,x2,y2);
+		//printf(" \n %lf	%lf %lf %lf ",x,y,x2,y2);	
+		//printf("\n\n %lf \n\n",dist);
+		if ( maior < dist)
+			maior = dist;
+			
+		if ( menor > dist)
+			menor = dist;
+
+		media = dist + media;
+		
+		cont++; 			
+	}
+	media = (media/cont);
+	
+	printf("Media : %lf ",media);
+	printf("\nMenor : %lf ",menor);
+	printf("\nMaior : %lf ",maior);
+}
+
+int main(int argc, char *argv[]){
+	
+	FILE *fp;   
+	fp = fopen(argv[1],"r");
+ 	freopen("Interpolados","w",stdout);	 
+	TrataDados(fp);
+	fp = fopen("Interpolados","r");
+	freopen("Resultados","w",stdout);
+	dados(fp);
+	return 0;		
+	
+}

@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <math.h>
+
+double distancia(double x,double y,double x2,double y2){
+
+double distancia;
+	
+	distancia = (x2-x)*(x2-x)+(y2-y)*(y2-y);
+	distancia = pow(distancia,0.5);
+	return distancia;
+}
+
+double distancia(double x,double y,double x2,double y2){
+
+double distancia;
+	
+	distancia = (x2-x)*(x2-x)+(y2-y)*(y2-y);
+	distancia = pow(distancia,0.5);
+	return distancia;
+}
+
+
+int CalculaPosicao(FILE *fp){
+
+#define TAM 3
+
+int id[TAM];
+double x[TAM];
+double y[TAM];
+double dist[TAM];
+double xMovel,yMovel;
+int i,NumPacote;
+
+	while(!feof(fp)){
+
+		for(i = 0; i < TAM; i++){
+			
+			fscanf(fp,"%d",&NumPacote);
+			fscanf(fp,"%d",&id[i]);
+			fscanf(fp,"%lf",&x[i]);		
+			fscanf(fp,"%lf",&y[i]);
+			
+			fscanf(fp,"%lf",&xMovel);		
+			fscanf(fp,"%lf",&yMovel);
+			
+			dist = distancia (x[i],y[i],xMovel,yMovel);
+		}
+	}
+
+int main(int argc, char *argv[]){
+	
+	FILE *fp;   
+	fp = fopen(argv[1],"r");
+ 	//freopen("Interpolados","w",stdout);	 
+	TrataDados(fp);
+	//fp = fopen("Interpolados","r");
+	freopen("Resultados","w",stdout);
+	dados(fp);
+	return 0;		
+	
+}

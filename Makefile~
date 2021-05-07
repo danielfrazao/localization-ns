@@ -1,0 +1,7 @@
+all:
+	g++ CalculaPosicao.cc -lm -lnewmat -o CalculaPosicao
+	
+	mv Saida-0.002 Saida
+	./CalculaPosicao Saida
+	mv ResultadoLocalizacao ResultadoLocalizacao-0.002
+	mv Saida Saida-0.002

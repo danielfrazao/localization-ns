@@ -1,0 +1,4 @@
+set xrange [10:1]
+f(x,a,b,c,d)= 0 
+plot f(x,180,0,0,0)
+
